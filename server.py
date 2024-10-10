@@ -28,9 +28,18 @@ class SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with open(file_path, 'rb') as file:
                     self.wfile.write(file.read())
                 return
+            else:
+                # 如果文件不存在，返回 404
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"Not Found")
         else:
-            # 如果不是文件，返回空白页面
+            # 如果请求的路径不是文件路径，则返回 index.html
             self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("index.html", 'rb') as file:
+                self.wfile.write(file.read())
 
     def do_POST(self):
         # 处理文件上传
