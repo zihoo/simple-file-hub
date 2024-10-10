@@ -16,30 +16,20 @@ if not os.path.exists(UPLOAD_DIR):
 # 自定义处理器
 class SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        # 检查是否请求的路径为文件路径
-        if self.path.startswith("/"):
-            # 请求的文件路径
-            file_path = os.path.join(UPLOAD_DIR, self.path.lstrip("/"))
-            if os.path.exists(file_path) and os.path.isfile(file_path):
-                # 如果文件存在，则提供文件下载
-                self.send_response(200)
-                self.send_header("Content-type", "application/octet-stream")
-                self.end_headers()
-                with open(file_path, 'rb') as file:
-                    self.wfile.write(file.read())
-                return
-            else:
-                # 如果文件不存在，返回 404
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(b"Not Found")
-        else:
-            # 如果请求的路径不是文件路径，则返回 index.html
+        # 请求的文件路径
+        file_path = os.path.join(UPLOAD_DIR, self.path.lstrip("/"))
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            # 如果文件存在，则提供文件下载
             self.send_response(200)
-            self.send_header("Content-type", "text/html")
+            self.send_header("Content-type", "application/octet-stream")
             self.end_headers()
-            with open("index.html", 'rb') as file:
+            with open(file_path, 'rb') as file:
                 self.wfile.write(file.read())
+            return
+        else:
+            # 如果文件不存在，返回 404
+            self.send_response(404)
+            self.end_headers()
 
     def do_POST(self):
         # 处理文件上传
