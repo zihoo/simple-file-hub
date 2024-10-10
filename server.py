@@ -2,7 +2,6 @@
 import http.server
 import os
 import cgi
-from urllib.parse import urlparse
 
 # 设置端口号
 PORT = 8000
