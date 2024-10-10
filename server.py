@@ -28,8 +28,9 @@ class SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with open(file_path, 'rb') as file:
                     self.wfile.write(file.read())
                 return
-        # 如果不是文件，则提供静态页面，如index.html
-        super().do_GET()
+        else:
+            # 如果不是文件，返回空白页面
+            self.send_response(200)
 
     def do_POST(self):
         # 处理文件上传
