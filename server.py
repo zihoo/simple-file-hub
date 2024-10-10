@@ -40,7 +40,7 @@ class SimpleHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
                 # 获取文件数据
                 file_data = fields.get('file')[0]
-                file_name = fields.get('file_name')[0].decode('utf-8')
+                file_name = fields.get('filename')[0]
 
                 # 将文件保存到 statics 目录
                 file_path = os.path.join(UPLOAD_DIR, file_name)
@@ -73,4 +73,7 @@ def run(server_class=http.server.HTTPServer, handler_class=SimpleHTTPRequestHand
 
 # 主函数
 if __name__ == "__main__":
-    run()
+    try:
+        run()
+    except KeyboardInterrupt:
+        print("\nServer stopped")
